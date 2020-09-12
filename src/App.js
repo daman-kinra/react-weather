@@ -70,7 +70,9 @@ function App() {
             <div className="weather">{weather.weather[0].main}</div>
           </div>
         </div>
-        ) : ('')}
+        ) : ((weather.cod === "404") ? (
+        <div className="not-found"><div className="inner">{weather.message}</div></div>
+        ) : (''))}
       </main>
     </div>
   );
