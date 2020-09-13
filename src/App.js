@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import './App.css';
+import * as ReactBootStrap from 'react-bootstrap';
 const api = {
   key: "60942fad27208e8a0d76fbbe9c783c61",
   base: "https://api.openweathermap.org/data/2.5/"
@@ -8,25 +9,29 @@ const api = {
 function App() {
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
+  const [loading, setloading] = useState(false);
 
   const search = evt => {
     if (evt.key === "Enter") {
+      setloading(true);
       fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
         .then(res => res.json())
         .then(result => {
           setWeather(result);
           setQuery('');
+          setloading(false);
           console.log(result);
         });
     }
   }
   const search1 = () =>{
-    
+    setloading(true);
     fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
         .then(res => res.json())
         .then(result => {
           setWeather(result);
           setQuery('');
+          setloading(false);
           console.log(result);
         });
   }
@@ -55,7 +60,12 @@ function App() {
           />
           <button className="btn" onClick={search1}>CHECK</button>
         </div>
-        {(typeof weather.main != "undefined") ? (
+        {(loading===true)?(
+  
+            <div class="loading"></div>
+          
+        ):('')}
+        {(typeof weather.main != "undefined" && loading===false) ? (
         <div>
           <div className="location-box">
             <div className="location">{weather.name}, {weather.sys.country}</div>
